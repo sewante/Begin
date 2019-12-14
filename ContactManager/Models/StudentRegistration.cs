@@ -63,6 +63,20 @@ namespace ContactManager.Models
         {
             return studentList;
         }
+        // get a specified student whose registration number is specified otherwise return null
+        public Student GetStudent(string registrationNumber)
+        {
+            for(int i = 0; i < studentList.Count; i++)
+            {
+                Student ithStudent = studentList.ElementAt(i);
+
+                if(ithStudent.RegistrationNumber == registrationNumber)
+                {
+                    return ithStudent;
+                }
+            }
+            return null;
+        }
         // update a student's details
         public String UpdateStudent(Student student)
         {
