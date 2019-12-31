@@ -27,5 +27,11 @@ namespace ContactManager.Controllers
         {
             return StudentRegistration.getInstance().GetStudent(registrationNumber);
         }
+
+        // get the student courses
+        public List<Course> GetStudentCourses()
+        {
+            return StudentRegistration.getInstance().GetCourses();
+        }
     }
 }

@@ -8,6 +8,7 @@
  */
 
 
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,46 @@ namespace ContactManager.Models
                 }
             }
             return null;
+        }
+        public List<Course> GetCourses()
+        {
+            List<Course> courses = new List<Course>();
+            DatabaseLayer databaseLayer = new DatabaseLayer();
+            MySqlConnection sqlConnection = databaseLayer.GetConnection();
+            try
+            {
+                Course course = null;
+                string coursesSQL = "SELECT * FROM course";
+                MySqlCommand command = new MySqlCommand(coursesSQL, sqlConnection);
+
+                if (sqlConnection.State == System.Data.ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
+                var reader = command.ExecuteReader();
+                while(reader.Read())
+                {
+                    course = new Course();
+                    course.CourseID = reader.GetInt16(0);
+                    course.CourseName = reader.GetString(1);
+                    course.CourseCode = reader.GetString(2);
+                    course.CourseDuration = reader.GetInt16(3);
+
+                    courses.Add(course);
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception
+            }
+            finally
+            {
+                if (sqlConnection.State == System.Data.ConnectionState.Open)
+                {
+                    sqlConnection.Close();
+                }
+            }
+            return courses;
         }
         // update a student's details
         public String UpdateStudent(Student student)
